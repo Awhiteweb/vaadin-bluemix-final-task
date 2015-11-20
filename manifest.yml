@@ -1,0 +1,11 @@
+applications:
+- path: VaadinStarterApp.war
+  memory: 512M
+  instances: 1
+  domain: eu-gb.mybluemix.net
+  name: vaadin-final-task-aw
+  host: vaadin-final-task-aw
+  disk_quota: 1024M
+  services:
+  - sqldb
+  - visual-recognition
