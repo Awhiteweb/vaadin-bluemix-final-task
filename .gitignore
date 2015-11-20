@@ -1,0 +1,7 @@
+.classpath
+.factorypath
+.project
+.settings/
+License.txt
+README.md
+*.class
