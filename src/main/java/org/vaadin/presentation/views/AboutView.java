@@ -71,5 +71,6 @@ public class AboutView extends MVerticalLayout implements View
 	@Override
 	public void enter( ViewChangeListener.ViewChangeEvent viewChangeEvent )
 	{
+		// http://vaadin-final-task-aw.eu-gb.mybluemix.net
 	}
 }

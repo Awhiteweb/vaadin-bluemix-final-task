@@ -8,4 +8,5 @@ applications:
   disk_quota: 1024M
   services:
   - sqldb
-  - visual-recognition
+  - v-insights-fm
+  - speech-to-text
