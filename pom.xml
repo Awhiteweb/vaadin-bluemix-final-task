@@ -63,6 +63,11 @@
             <version>1.0.0-b2</version>
         </dependency>
         <dependency>
+		   <groupId>org.vaadin.addon</groupId>
+		   <artifactId>oauthpopup</artifactId>
+		   <version>0.0.4</version>
+		</dependency>
+        <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-web</artifactId>
             <version>2.0.4</version>

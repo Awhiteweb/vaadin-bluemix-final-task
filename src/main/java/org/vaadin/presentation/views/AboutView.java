@@ -6,7 +6,11 @@ import org.jinstagram.auth.InstagramAuthService;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.auth.oauth.InstagramService;
+import org.vaadin.addon.oauthpopup.OAuthListener;
+import org.vaadin.addon.oauthpopup.OAuthPopupButton;
+import org.vaadin.addon.oauthpopup.buttons.TwitterButton;
 import org.vaadin.backend.Constants;
+import org.vaadin.backend.domain.InstagramButton;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -17,6 +21,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
 /*
@@ -65,6 +70,24 @@ public class AboutView extends MVerticalLayout implements View
 		button.setStyleName( ValoTheme.BUTTON_LARGE );
 		button.addStyleName( ValoTheme.BUTTON_PRIMARY );
 		add( button );
+		
+		OAuthPopupButton oauthButton = new InstagramButton( Constants.CLIENT_ID, Constants.CLIENT_SECRET );
+		oauthButton.addOAuthListener( new OAuthListener() 
+		{
+			@Override
+			public void authSuccessful( String accessToken, String accessTokenSecret, String oauthRawResponse )
+			{
+				Notification.show( "Successful" );
+			}
+			
+			@Override
+			public void authDenied( String reason )
+			{
+				Notification.show( "Denied" );
+			}
+		} );
+		
+		add( oauthButton );
 		setMargin( new MarginInfo( false, true, true, true ) );
 	}
 
