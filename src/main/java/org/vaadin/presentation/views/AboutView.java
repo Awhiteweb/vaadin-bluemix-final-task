@@ -1,11 +1,13 @@
 package org.vaadin.presentation.views;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
-import org.vaadin.backend.CustomerService;
+import org.jinstagram.auth.InstagramAuthService;
+import org.jinstagram.auth.model.Token;
+import org.jinstagram.auth.model.Verifier;
+import org.jinstagram.auth.oauth.InstagramService;
+import org.vaadin.backend.Constants;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
-import org.vaadin.cdiviewmenu.ViewMenuUI;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
@@ -15,43 +17,59 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 
 /*
  * A very simple view that just displays an "about text". The view also has 
  * a button to reset the demo date in the database.
  */
-@CDIView("")
-@ViewMenuItem(icon = FontAwesome.INFO)
-public class AboutView extends MVerticalLayout implements View {
+@CDIView( "" )
+@ViewMenuItem( icon = FontAwesome.INFO )
+public class AboutView extends MVerticalLayout implements View
+{
+	private static final long serialVersionUID = 1L;
+	private InstagramService service;
 
-    @Inject
-    CustomerService service;
+	@PostConstruct
+	void init()
+	{
+		if ( service != null )
+		{
+			System.out.println( "Code: " );
+		}
+		else
+			auth();
+		setStyleName( ValoTheme.LAYOUT_CARD );
+	}
 
-    @PostConstruct
-    void init() {
-        add(new RichText().withMarkDownResource("/about.md"));
+	private void auth()
+	{
+		removeAllComponents();
+		add( new RichText().withMarkDownResource( "/about.md" ) );
 
-        int records = service.findAll().size();
-        add(new Label("There are " + records + " records in the DB."));
+		Button button = new Button( "Authenticate", new Button.ClickListener() {
+			private static final long serialVersionUID = 1L;
 
-        Button button = new Button("Fill test data into DB", new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                service.resetTestData();
-                ViewMenuUI.getMenu().navigateTo(CustomerListView.class);
-            }
-        });
-        button.setStyleName(ValoTheme.BUTTON_LARGE);
-        button.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        add(button);
+			@Override
+			public void buttonClick( Button.ClickEvent event )
+			{
+				service = new InstagramAuthService().apiKey( Constants.CLIENT_ID ).apiSecret( Constants.CLIENT_SECRET )
+						.callback( Constants.REDIRECT_URI ).build();
+				System.out.println( service.getAuthorizationUrl( Constants.EMPTY_TOKEN ) );
+				String authorizationUrl = service.getAuthorizationUrl( Constants.EMPTY_TOKEN );
+				Verifier verifier = new Verifier( authorizationUrl );
+				Token accessToken = service.getAccessToken( Constants.EMPTY_TOKEN, verifier );
+				System.out.println( accessToken );
+			}
+		} );
+		button.setStyleName( ValoTheme.BUTTON_LARGE );
+		button.addStyleName( ValoTheme.BUTTON_PRIMARY );
+		add( button );
+		setMargin( new MarginInfo( false, true, true, true ) );
+	}
 
-        setMargin(new MarginInfo(false, true, true, true));
-        setStyleName(ValoTheme.LAYOUT_CARD);
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-    }
+	@Override
+	public void enter( ViewChangeListener.ViewChangeEvent viewChangeEvent )
+	{
+	}
 }
