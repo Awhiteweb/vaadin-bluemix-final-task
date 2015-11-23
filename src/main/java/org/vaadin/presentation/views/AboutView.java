@@ -2,6 +2,7 @@ package org.vaadin.presentation.views;
 
 import javax.annotation.PostConstruct;
 
+import org.jinstagram.Instagram;
 import org.jinstagram.auth.InstagramAuthService;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.auth.model.Verifier;
@@ -21,6 +22,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -34,15 +36,20 @@ public class AboutView extends MVerticalLayout implements View
 {
 	private static final long serialVersionUID = 1L;
 	private InstagramService service;
+	private Instagram instagram;
 
 	@PostConstruct
 	void init()
 	{
-		getSession().getAttribute( "" );
+//		if ( getSession().getAttribute( Constants.INSTAGRAM_OBJECT ) != null )
+//		{
+//			instagram = (Instagram) getSession().getAttribute( Constants.INSTAGRAM_OBJECT );
+//			Label label = new Label( instagram.getClientId() );
+//			add( label );
+//			
+//		}
 		if ( service != null )
-		{
 			System.out.println( "Code: " );
-		}
 		else
 			auth();
 		setStyleName( ValoTheme.LAYOUT_CARD );
