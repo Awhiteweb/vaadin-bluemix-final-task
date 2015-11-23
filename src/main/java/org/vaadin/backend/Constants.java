@@ -11,11 +11,14 @@ public class Constants {
 					+ "client_id=%s"
 					+ "&redirect_uri=%s"
 					+ "&response_type=code";
-    public static final String CLIENT_ID = "a5e9504af6da4ae48481617c02d6417a";
+    public static final String CLIENT_ID = "4bf576627e9f48ef973455098f7c9063";
     public static final String CLIENT_SECRET = "cf30dfb9fe4e42dab0ce59293e68e900";
-    public static final String REDIRECT_URI = "http://vaadin-final-task-aw.eu-gb.mybluemix.net";
+    public static final String REDIRECT_URL = "http://localhost:9080/vaadin-final-task-aw/";
     public static final String ACCESS_TOKEN_URL = "https://api.instagram.com/oauth/access_token";
     public static final Token EMPTY_TOKEN = null;
+    public static final String Live_CID = "a5e9504af6da4ae48481617c02d6417a";
+    public static final String LIVE_CS = "cf30dfb9fe4e42dab0ce59293e68e900";
+    public static final String LIVE_RD_URL = "http://vaadin-final-task-aw.eu-gb.mybluemix.net";
 
     /**
      * Http Session Attributes

@@ -1,6 +1,8 @@
 package org.vaadin.presentation.views;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.InstagramAuthService;
@@ -11,7 +13,9 @@ import org.vaadin.addon.oauthpopup.OAuthListener;
 import org.vaadin.addon.oauthpopup.OAuthPopupButton;
 import org.vaadin.addon.oauthpopup.buttons.TwitterButton;
 import org.vaadin.backend.Constants;
-import org.vaadin.backend.domain.InstagramButton;
+import org.vaadin.backend.InstagramButton;
+import org.vaadin.backend.LoginWindow;
+import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -24,6 +28,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 /*
@@ -38,18 +43,19 @@ public class AboutView extends MVerticalLayout implements View
 	private InstagramService service;
 	private Instagram instagram;
 
+	@Inject
+	UserSession userSession;
+	
+	@Inject
+	Instance<LoginWindow> loginWindow;
+	
 	@PostConstruct
 	void init()
 	{
-//		if ( getSession().getAttribute( Constants.INSTAGRAM_OBJECT ) != null )
-//		{
-//			instagram = (Instagram) getSession().getAttribute( Constants.INSTAGRAM_OBJECT );
-//			Label label = new Label( instagram.getClientId() );
-//			add( label );
-//			
-//		}
-		if ( service != null )
-			System.out.println( "Code: " );
+		if ( userSession.isLoggedIn() )
+		{
+			showDetails();
+		}
 		else
 			auth();
 		setStyleName( ValoTheme.LAYOUT_CARD );
@@ -57,50 +63,48 @@ public class AboutView extends MVerticalLayout implements View
 
 	private void auth()
 	{
-		removeAllComponents();
-		add( new RichText().withMarkDownResource( "/about.md" ) );
-
-		Button button = new Button( "Authenticate", new Button.ClickListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick( Button.ClickEvent event )
-			{
-				service = new InstagramAuthService().apiKey( Constants.CLIENT_ID ).apiSecret( Constants.CLIENT_SECRET )
-						.callback( Constants.REDIRECT_URI ).build();
-				System.out.println( service.getAuthorizationUrl( Constants.EMPTY_TOKEN ) );
-				String authorizationUrl = service.getAuthorizationUrl( Constants.EMPTY_TOKEN );
-				
-				
-				// open authul in window
-				
-				Verifier verifier = new Verifier( authorizationUrl );
-				Token accessToken = service.getAccessToken( Constants.EMPTY_TOKEN, verifier );
-				System.out.println( accessToken );
-			}
-		} );
-		button.setStyleName( ValoTheme.BUTTON_LARGE );
-		button.addStyleName( ValoTheme.BUTTON_PRIMARY );
-		add( button );
-		
-		OAuthPopupButton oauthButton = new InstagramButton( Constants.CLIENT_ID, Constants.CLIENT_SECRET );
-		oauthButton.addOAuthListener( new OAuthListener() 
-		{
-			@Override
-			public void authSuccessful( String accessToken, String accessTokenSecret, String oauthRawResponse )
-			{
-				Notification.show( "Successful" );
-			}
-			
-			@Override
-			public void authDenied( String reason )
-			{
-				Notification.show( "Denied" );
-			}
-		} );
-		
-		add( oauthButton );
+//		UI.getCurrent().getContent().setVisible( false );
+//		UI.getCurrent().addWindow( loginWindow.get() );
+//		add( new RichText().withMarkDownResource( "/about.md" ) );
+//
+//		Button button = new Button( "Authenticate", new Button.ClickListener() {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public void buttonClick( Button.ClickEvent event )
+//			{
+//				
+//			}
+//		} );
+//		button.setStyleName( ValoTheme.BUTTON_LARGE );
+//		button.addStyleName( ValoTheme.BUTTON_PRIMARY );
+//		add( button );
+//		
+//		OAuthPopupButton oauthButton = new InstagramButton( Constants.CLIENT_ID, Constants.CLIENT_SECRET );
+//		oauthButton.addOAuthListener( new OAuthListener() 
+//		{
+//			@Override
+//			public void authSuccessful( String accessToken, String accessTokenSecret, String oauthRawResponse )
+//			{
+//				Notification.show( "Successful" );
+//			}
+//			
+//			@Override
+//			public void authDenied( String reason )
+//			{
+//				Notification.show( "Denied" );
+//			}
+//		} );
+//		
+		add( new Label( "Not logged in" ) );
 		setMargin( new MarginInfo( false, true, true, true ) );
+	}
+	
+	private void showDetails()
+	{
+		Label label = new Label( userSession.getUsername() );
+		removeAllComponents();
+		add( label );
 	}
 
 	@Override

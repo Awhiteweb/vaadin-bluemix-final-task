@@ -1,4 +1,4 @@
-package org.vaadin.backend.domain;
+package org.vaadin.backend;
 
 import com.vividsolutions.jts.geom.Point;
 

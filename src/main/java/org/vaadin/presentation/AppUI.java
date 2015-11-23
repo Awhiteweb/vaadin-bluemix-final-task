@@ -4,7 +4,14 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
+
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+
+import org.vaadin.backend.LoginWindow;
+import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuUI;
 
 
@@ -26,10 +33,29 @@ public class AppUI extends ViewMenuUI
 {
 	private static final long serialVersionUID = 1L;
 
+	@Inject
+	UserSession userSession;
+	
+	@Inject
+	Instance<LoginWindow> loginWindow;
+
+	
+	@Override
+    protected void init( VaadinRequest request )
+	{
+        super.init( request );
+        if ( !userSession.isLoggedIn() )
+        {
+            getContent().setVisible( false );
+            addWindow( loginWindow.get() );
+        }
+    }
+	
 	/**
      * @return the currently active UI instance with correct type.
      */
-    public static AppUI get() {
+    public static AppUI get() 
+    {
         return (AppUI) UI.getCurrent();
     }
 

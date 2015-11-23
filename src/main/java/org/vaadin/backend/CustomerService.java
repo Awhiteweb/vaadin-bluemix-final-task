@@ -2,9 +2,6 @@ package org.vaadin.backend;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import org.vaadin.backend.domain.Customer;
-import org.vaadin.backend.domain.CustomerStatus;
-import org.vaadin.backend.domain.Gender;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

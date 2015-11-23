@@ -1,8 +1,7 @@
-package org.vaadin.backend.domain;
+package org.vaadin.backend;
 
 import org.scribe.builder.api.DefaultApi10a;
 import org.scribe.model.Token;
-import org.vaadin.backend.Constants;
 
 public class InstagramAPI extends DefaultApi10a
 {
