@@ -11,9 +11,7 @@ import javax.servlet.annotation.WebFilter;
  *
  */
 @WebFilter("/UIDL/*")
-public class CompressionFilter extends GzipFilter {
-
-    public CompressionFilter() {
-
-    }
+public class CompressionFilter extends GzipFilter 
+{
+    public CompressionFilter() {}
 }

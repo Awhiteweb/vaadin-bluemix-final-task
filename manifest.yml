@@ -1,11 +1,9 @@
 applications:
-- path: VaadinStarterApp.war
+- path: target/vaadin-final-task-aw.war
   memory: 512M
   instances: 1
   domain: eu-gb.mybluemix.net
   name: vaadin-final-task-aw
-  host: vaadin-final-task-aw
-  disk_quota: 1024M
   services:
   - sqldb
   - v-insights-fm

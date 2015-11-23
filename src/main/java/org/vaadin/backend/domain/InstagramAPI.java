@@ -6,19 +6,17 @@ import org.vaadin.backend.Constants;
 
 public class InstagramAPI extends DefaultApi10a
 {
-	private static final String REQUEST_TOKEN_RESOURCE = "api.twitter.com/oauth/request_token";
-	private static final String ACCESS_TOKEN_RESOURCE = "api.twitter.com/oauth/access_token";
 
 	@Override
 	public String getAccessTokenEndpoint()
 	{
-		return "https://" + ACCESS_TOKEN_RESOURCE;
+		return Constants.ACCESS_TOKEN_URL;
 	}
 
 	@Override
 	public String getRequestTokenEndpoint()
 	{
-		return "https://" + REQUEST_TOKEN_RESOURCE;
+		return Constants.getAUTH_URL();
 	}
 
 	@Override

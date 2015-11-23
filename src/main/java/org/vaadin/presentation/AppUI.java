@@ -17,17 +17,16 @@ import org.vaadin.cdiviewmenu.ViewMenuUI;
  * We also configure the theme, host page title and the widgetset used
  * by the application.
  * </p>
- * <p>
- * The real meat of this example is in CustomerView and CustomerForm classes.
- * </p>
  */
 @CDIUI("")
 @Theme("valo")
 @Title("Simple CRM")
 @Widgetset("AppWidgetset")
-public class AppUI extends ViewMenuUI {
+public class AppUI extends ViewMenuUI 
+{
+	private static final long serialVersionUID = 1L;
 
-    /**
+	/**
      * @return the currently active UI instance with correct type.
      */
     public static AppUI get() {

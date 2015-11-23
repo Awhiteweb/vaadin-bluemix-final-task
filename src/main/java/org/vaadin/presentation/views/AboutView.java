@@ -38,6 +38,7 @@ public class AboutView extends MVerticalLayout implements View
 	@PostConstruct
 	void init()
 	{
+		getSession().getAttribute( "" );
 		if ( service != null )
 		{
 			System.out.println( "Code: " );
@@ -62,6 +63,10 @@ public class AboutView extends MVerticalLayout implements View
 						.callback( Constants.REDIRECT_URI ).build();
 				System.out.println( service.getAuthorizationUrl( Constants.EMPTY_TOKEN ) );
 				String authorizationUrl = service.getAuthorizationUrl( Constants.EMPTY_TOKEN );
+				
+				
+				// open authul in window
+				
 				Verifier verifier = new Verifier( authorizationUrl );
 				Token accessToken = service.getAccessToken( Constants.EMPTY_TOKEN, verifier );
 				System.out.println( accessToken );

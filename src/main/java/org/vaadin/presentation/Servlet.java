@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
  * have designed the content to be suitable for smaller screens as well.
  */
 @WebServlet(urlPatterns = "/*")
-public class Servlet extends ViewPortCDIServlet {
-
+public class Servlet extends ViewPortCDIServlet 
+{
+	private static final long serialVersionUID = 1L;
 }
