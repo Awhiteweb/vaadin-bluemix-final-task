@@ -75,11 +75,11 @@ public class LoginWindow extends Window implements RequestHandler
 			String code = request.getParameter( "code" );
 			Verifier v = new Verifier( code );
 			Token t = service.getAccessToken( null, v );
-			OAuthRequest req = new OAuthRequest( Verbs.GET, Constants.REDIRECT_URL );
-			service.signRequest( t, req );
-			Response r = req.send();
-			
-			Instagram instagramObject = (Instagram) ( (Object) r.getBody() );
+			Instagram instagramObject = new Instagram( t );
+
+//			OAuthRequest req = new OAuthRequest( Verbs.GET, Constants.REDIRECT_URL );
+//			service.signRequest( t, req );
+//			Response r = req.send();
 			
 			userSession.setObject( instagramObject );
 			
@@ -89,5 +89,20 @@ public class LoginWindow extends Window implements RequestHandler
 		}
 		return false;
 	}
+	
+//	static {
+//	    //for localhost testing only
+//	    javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+//	    new javax.net.ssl.HostnameVerifier(){
+//
+//	        public boolean verify(String hostname,
+//	                javax.net.ssl.SSLSession sslSession) {
+//	            if (hostname.equals("localhost")) {
+//	                return true;
+//	            }
+//	            return false;
+//	        }
+//	    });
+//	}
 
 }
