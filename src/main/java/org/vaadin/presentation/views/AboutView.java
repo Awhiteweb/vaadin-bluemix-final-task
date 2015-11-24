@@ -5,30 +5,23 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.jinstagram.Instagram;
-import org.jinstagram.auth.InstagramAuthService;
-import org.jinstagram.auth.model.Token;
-import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.auth.oauth.InstagramService;
-import org.vaadin.addon.oauthpopup.OAuthListener;
-import org.vaadin.addon.oauthpopup.OAuthPopupButton;
-import org.vaadin.addon.oauthpopup.buttons.TwitterButton;
-import org.vaadin.backend.Constants;
-import org.vaadin.backend.InstagramButton;
+import org.jinstagram.entity.common.ImageData;
+import org.jinstagram.entity.common.Location;
+import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.vaadin.backend.LoginWindow;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
-import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 /*
@@ -63,50 +56,40 @@ public class AboutView extends MVerticalLayout implements View
 
 	private void auth()
 	{
-//		UI.getCurrent().getContent().setVisible( false );
-//		UI.getCurrent().addWindow( loginWindow.get() );
-//		add( new RichText().withMarkDownResource( "/about.md" ) );
-//
-//		Button button = new Button( "Authenticate", new Button.ClickListener() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public void buttonClick( Button.ClickEvent event )
-//			{
-//				
-//			}
-//		} );
-//		button.setStyleName( ValoTheme.BUTTON_LARGE );
-//		button.addStyleName( ValoTheme.BUTTON_PRIMARY );
-//		add( button );
-//		
-//		OAuthPopupButton oauthButton = new InstagramButton( Constants.CLIENT_ID, Constants.CLIENT_SECRET );
-//		oauthButton.addOAuthListener( new OAuthListener() 
-//		{
-//			@Override
-//			public void authSuccessful( String accessToken, String accessTokenSecret, String oauthRawResponse )
-//			{
-//				Notification.show( "Successful" );
-//			}
-//			
-//			@Override
-//			public void authDenied( String reason )
-//			{
-//				Notification.show( "Denied" );
-//			}
-//		} );
-//		
 		add( new Label( "Not logged in" ) );
 		setMargin( new MarginInfo( false, true, true, true ) );
 	}
 	
 	private void showDetails()
 	{
-		Label label = new Label( userSession.getUsername() );
 		removeAllComponents();
+		Label label = new Label( "Hello " + userSession.getUsername() );
+		MediaFeedData mfd = getMediaFeedData( 0 );
+		String imageUrl = getImage( mfd ).getImageUrl();
+		ExternalResource resource = new ExternalResource( imageUrl );
+		Image image = new Image( "first low res image", resource );
+		double[] loc = getImageLocation( mfd );
 		add( label );
+		add( image );
+		add( new Label( String.format( "Lat: %d - Long: %d", loc[0], loc[1] ) ) );
+	}
+	
+	private MediaFeedData getMediaFeedData( int itemNumber )
+	{
+		return userSession.getMyRecentData().get( itemNumber );
 	}
 
+	private ImageData getImage( MediaFeedData data )
+	{
+		return data.getImages().getLowResolution();
+	}
+	
+	private double[] getImageLocation( MediaFeedData data )
+	{
+		Location loc = data.getLocation();
+		return new double[]{ loc.getLatitude(), loc.getLongitude() };
+	}
+	
 	@Override
 	public void enter( ViewChangeListener.ViewChangeEvent viewChangeEvent )
 	{

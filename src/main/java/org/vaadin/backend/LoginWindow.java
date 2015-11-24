@@ -77,10 +77,6 @@ public class LoginWindow extends Window implements RequestHandler
 			Token t = service.getAccessToken( null, v );
 			Instagram instagramObject = new Instagram( t );
 
-//			OAuthRequest req = new OAuthRequest( Verbs.GET, Constants.REDIRECT_URL );
-//			service.signRequest( t, req );
-//			Response r = req.send();
-			
 			userSession.setObject( instagramObject );
 			
 			( (VaadinServletResponse) response ).getHttpServletResponse()
