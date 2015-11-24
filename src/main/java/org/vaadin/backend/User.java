@@ -4,20 +4,23 @@ import java.util.List;
 
 import org.jinstagram.Instagram;
 import org.jinstagram.entity.users.basicinfo.UserInfo;
+import org.jinstagram.entity.users.basicinfo.UserInfoData;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 
 public class User
 {
+	private String id;
 	private String username;
 	private String bio;
 	private String firstname;
 	private String lastname;
 	private String fullname;
-	private MediaFeed recentMediaFeed;
+//	private MediaFeed recentMediaFeed;
 //	private MediaFeed popularMediaFeed;
-	private Instagram object;	
+	private Instagram object;
+	private UserInfoData userInfoData;
 	
 	public User( String username )
 	{
@@ -32,70 +35,59 @@ public class User
 		{
 			username = object.getCurrentUserInfo().getData().getFirstName();
 //			popularMediaFeed = object.getPopularMedia();
-			recentMediaFeed = object.getRecentMediaFeed( username );
+//			recentMediaFeed = object.getRecentMediaFeed( username );
 		}
 		catch ( InstagramException e )
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public User( Instagram object, UserInfo userInfo )
+	{
+		this.userInfoData = userInfo.getData();
+		setUserDetails();
+		this.object = object;
 	}
 
 	private void setUserDetails()
 	{
-		UserInfo info = null;
-		try
-		{
-			info = object.getCurrentUserInfo();
-		}
-		catch ( InstagramException e )
-		{
-			e.printStackTrace();
-		}
-		if ( info != null )
-		{
-			setUsername( info );
-			setFirstname( info );
-			setLastname( info );
-			setFullname( info );
-			setBio( info );
-		}
+		setUsername( userInfoData.getUsername() );
+		setFirstname( userInfoData.getFirstName() );
+		setLastname( userInfoData.getLastName() );
+		setFullname( userInfoData.getFullName() );
+		setBio( userInfoData.getBio() );
+		setId( userInfoData.getId() );
 	}
 	
-	private void setUsername( UserInfo info )
+	private void setUsername( String name )
 	{
-		if ( info.getData().getUsername() != null )
-			username = info.getData().getUsername();
-		username = null;
+		username = name;
 	}
 
-	private void setFirstname( UserInfo info )
+	private void setFirstname( String name )
 	{
-		if ( info.getData().getFirstName() != null )
-			firstname = info.getData().getFirstName();
-		firstname = null;
+		firstname = name;
 	}
 
-	private void setLastname( UserInfo info )
+	private void setLastname( String name )
 	{
-		if ( info.getData().getLastName() != null )
-			lastname =  info.getData().getLastName();
-		lastname = null;
+		lastname = name;
 	}
 
-	private void setFullname( UserInfo info )
+	private void setFullname( String name )
 	{
-		if ( info.getData().getFullName() != null )
-			fullname = info.getData().getFullName();
-		else
-			fullname = null;
+		fullname = name;
 	}
 
-	private void setBio( UserInfo info )
+	private void setBio( String bio )
 	{
-		if ( info.getData().getBio() != null )
-			bio = info.getData().getBio();
-		else
-			bio = null;
+		this.bio = bio;
+	}
+	
+	private void setId( String id )
+	{
+		this.id = id;
 	}
 
 	public void setObject( Instagram object )
@@ -103,20 +95,20 @@ public class User
 		this.object = object;
 	}
 	
-	public List<MediaFeedData> getRecentFeedData()
-	{
-		return recentMediaFeed.getData();
-	}
+//	public List<MediaFeedData> getRecentFeedData()
+//	{
+//		return recentMediaFeed.getData();
+//	}
 
 	public String getUsername()
 	{
 		return username;
 	}
 
-	public MediaFeed getRecentMediaFeed()
-	{
-		return recentMediaFeed;
-	}
+//	public MediaFeed getRecentMediaFeed()
+//	{
+//		return recentMediaFeed;
+//	}
 
 	public Instagram getObject()
 	{
@@ -147,5 +139,9 @@ public class User
 	{
 		return fullname;
 	}
-
+	
+	public String getId()
+	{
+		return id;
+	}
 }

@@ -1,5 +1,6 @@
 package org.vaadin.presentation.views;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import org.jinstagram.auth.oauth.InstagramService;
 import org.jinstagram.entity.common.ImageData;
 import org.jinstagram.entity.common.Location;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.vaadin.backend.UserMap;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.presentation.LoginWindow;
@@ -23,6 +25,7 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
@@ -64,22 +67,21 @@ public class AboutView extends MVerticalLayout implements View
 	private void showDetails()
 	{
 		removeAllComponents();
-		String hello = "Hello " + userSession.getUsername();
-//		String feedSize = " feed size: " + userSession.getMyRecentData().size();
+		HashMap<UserMap, String> userDetails = userSession.getUserDetails();
+		String hello = "Hello " + userDetails.get( UserMap.USERNAME );
+		Grid userGrid = new Grid();
+		userGrid.addColumn( "Title", String.class );
+		userGrid.addColumn( "Info", String.class );
+		userGrid.addRow( UserMap.ID.toString(), userDetails.get( UserMap.ID ) );
+		userGrid.addRow( UserMap.USERNAME.toString(), userDetails.get( UserMap.USERNAME ) );
+		userGrid.addRow( UserMap.FIRSTNAME.toString(), userDetails.get( UserMap.FIRSTNAME ) );
+		userGrid.addRow( UserMap.LASTNAME.toString(), userDetails.get( UserMap.LASTNAME ) );
+		userGrid.addRow( UserMap.FULLNAME.toString(), userDetails.get( UserMap.FULLNAME ) );
+		userGrid.addRow( UserMap.BIO.toString(), userDetails.get( UserMap.BIO ) );
+		userGrid.setWidth( "50%" );
 		Label label = new Label( hello );
-//		MediaFeedData mfd = getMediaFeedData( 0 );
 		add( label );
-		
-//		if ( mfd != null )
-//		{
-			Button imgBtn = new Button( "add Image" );
-//			imgBtn.addClickListener( e -> addImage( mfd ) );
-			add( imgBtn );
-	
-			Button locBtn = new Button( "add Location" );
-//			locBtn.addClickListener( e -> addLocation( mfd ) );
-			add( locBtn );
-//		}
+		add( userGrid );
 	}
 	
 //	private void addImage( MediaFeedData mfd )
