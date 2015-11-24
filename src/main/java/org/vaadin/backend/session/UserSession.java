@@ -15,8 +15,8 @@ import org.vaadin.backend.User;
 public class UserSession implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private Instagram object;
 	private User user;
+	private Instagram object;
 
 	public boolean isLoggedIn()
 	{
@@ -28,50 +28,28 @@ public class UserSession implements Serializable
 		this.user = user;
 	}
 
-	public void setObject( Instagram instagramObject )
+	public void setObject( Instagram object )
 	{
-		object = instagramObject;
-		try
+		if ( object == null )
 		{
-			 user = new User( instagramObject.getCurrentUserInfo().getData().getUsername() );
+			user = new User( "Null value" );
 		}
-		catch ( InstagramException e )
+		else
 		{
-			e.printStackTrace();
+			this.object = object;
+			user = new User( object );
 		}
 	}
 	
 	public Instagram getObject()
 	{
-		return object;
+		return user.getObject();
 	}
 	
-	public MediaFeed getMediaFeed()
-	{
-		try
-		{
-			return object.getPopularMedia();
-		}
-		catch ( InstagramException e )
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public boolean setUserMediaFeed()
-	{
-		try
-		{
-			user.setRecentMediaFeed( object.getRecentMediaFeed( user.getUsername() ) );
-			return true;
-		}
-		catch ( InstagramException e )
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
+//	public MediaFeed getMediaFeed()
+//	{
+//		return user.getPopularMediaFeed();
+//	}
 	
 	public MediaFeed getMyRecentMediaFeed()
 	{
@@ -80,7 +58,7 @@ public class UserSession implements Serializable
 	
 	public List<MediaFeedData> getMyRecentData()
 	{
-		return getMyRecentMediaFeed().getData();
+		return user.getRecentFeedData();
 	}
 
 	public String getUsername()

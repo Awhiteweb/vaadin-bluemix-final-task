@@ -10,7 +10,6 @@ import com.vaadin.ui.UI;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.vaadin.backend.LoginWindow;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuUI;
 

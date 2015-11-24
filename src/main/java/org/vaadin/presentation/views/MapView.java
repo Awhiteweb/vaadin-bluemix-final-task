@@ -22,9 +22,10 @@ import com.vaadin.ui.Notification;
 
 @CDIView("map")
 @ViewMenuItem(icon = FontAwesome.GLOBE, order = 1)
-public class MapView extends MVerticalLayout implements View {
-
-    LMap worldMap = new LMap();
+public class MapView extends MVerticalLayout implements View 
+{
+	private static final long serialVersionUID = 1L;
+	LMap worldMap = new LMap();
 
     @PostConstruct
     void init() {

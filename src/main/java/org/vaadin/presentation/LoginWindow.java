@@ -1,4 +1,4 @@
-package org.vaadin.backend;
+package org.vaadin.presentation;
 
 import java.io.IOException;
 
@@ -12,6 +12,7 @@ import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.auth.oauth.InstagramService;
 import org.jinstagram.http.Response;
 import org.jinstagram.http.Verbs;
+import org.vaadin.backend.Constants;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
