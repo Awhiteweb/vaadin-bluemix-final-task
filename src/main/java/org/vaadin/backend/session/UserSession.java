@@ -11,6 +11,7 @@ import org.jinstagram.entity.users.basicinfo.UserInfo;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
+import org.vaadin.backend.ImageData;
 import org.vaadin.backend.User;
 import org.vaadin.backend.UserMap;
 
@@ -40,6 +41,7 @@ public class UserSession implements Serializable
 			userInfo = object.getCurrentUserInfo();
 			user = new User( object, userInfo );
 			mediaFeed = object.getRecentMediaFeed( user.getId() );
+			addMediaToUser();
 		}
 		catch ( InstagramException e )
 		{
@@ -55,22 +57,12 @@ public class UserSession implements Serializable
 		return user.getObject();
 	}
 	
-//	public MediaFeed getMediaFeed()
-//	{
-//		return user.getPopularMediaFeed();
-//	}
-	
 	public MediaFeed getMyRecentMediaFeed()
 	{
 		if ( mediaFeed != null )
 			return mediaFeed;
 		return null;
 	}
-	
-//	public List<MediaFeedData> getMyRecentData()
-//	{
-//		return user.getRecentFeedData();
-//	}
 
 	public String getUsername()
 	{
@@ -87,6 +79,53 @@ public class UserSession implements Serializable
 		userDetails.put( UserMap.FULLNAME, user.getFullname() );
 		userDetails.put( UserMap.BIO, user.getBio() );
 		return userDetails;
+	}
+	
+	public List<ImageData> getImages()
+	{
+		return user.getImages();
+	}
+	
+	public ImageData getImage( String id )
+	{
+		return user.getImage( id );
+	}
+	
+	private void addMediaToUser()
+	{
+		for ( MediaFeedData mfd : mediaFeed.getData() )
+		{
+			ImageData im = new ImageData();
+			im.setId( mfd.getId() );
+			if ( mfd.getCaption() != null )
+			{
+				im.setCaptionId( mfd.getCaption().getId() );
+				im.setCaptionText( mfd.getCaption().getText() );
+			}
+			if ( mfd.getLocation() != null )
+			{
+				im.setLocation( new double[]{ mfd.getLocation().getLatitude(), mfd.getLocation().getLongitude() } );
+				im.setLocationId( mfd.getLocation().getId() );
+				im.setLocationName( mfd.getLocation().getName() );
+			}
+			im.setLowResolution( mfd.getImages().getLowResolution().getImageUrl(),
+					mfd.getImages().getLowResolution().getImageWidth(),
+					mfd.getImages().getLowResolution().getImageHeight() );
+			im.setStandardResolution( mfd.getImages().getStandardResolution().getImageUrl(),
+					mfd.getImages().getStandardResolution().getImageWidth(),
+					mfd.getImages().getStandardResolution().getImageHeight() );
+			im.setThumbnail( mfd.getImages().getThumbnail().getImageUrl(),
+					mfd.getImages().getThumbnail().getImageWidth(),
+					mfd.getImages().getThumbnail().getImageHeight() );
+			user.addImage( im );
+		}
+	}
+
+	private boolean getLocation( MediaFeedData mfd )
+	{
+		if ( mfd.getLocation() != null )
+			return true;
+		return false;
 	}
 
 }

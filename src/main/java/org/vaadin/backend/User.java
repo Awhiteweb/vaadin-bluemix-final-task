@@ -1,5 +1,6 @@
 package org.vaadin.backend;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jinstagram.Instagram;
@@ -21,6 +22,7 @@ public class User
 //	private MediaFeed popularMediaFeed;
 	private Instagram object;
 	private UserInfoData userInfoData;
+	private List<ImageData> images = new ArrayList<ImageData>();
 	
 	public User( String username )
 	{
@@ -143,5 +145,27 @@ public class User
 	public String getId()
 	{
 		return id;
+	}
+
+	public List<ImageData> getImages()
+	{
+		return images;
+	}
+
+	public void setImages( List<ImageData> images )
+	{
+		this.images = images;
+	}
+	
+	public void addImage( ImageData image )
+	{
+		this.images.add( image );
+	}
+	public ImageData getImage( String id )
+	{
+		for ( ImageData d : images )
+			if ( d.getId().equals( id ) )
+				return d;
+		return null;
 	}
 }
