@@ -18,6 +18,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -59,19 +60,22 @@ public class AboutView extends MVerticalLayout implements View
 	{
 		removeAllComponents();
 		HashMap<UserMap, String> userDetails = userSession.getUserDetails();
-		String hello = "Hello " + userDetails.get( UserMap.USERNAME );
-		Grid userGrid = new Grid();
-		userGrid.addColumn( "Title", String.class );
-		userGrid.addColumn( "Info", String.class );
-		userGrid.addRow( UserMap.ID.toString(), userDetails.get( UserMap.ID ) );
-		userGrid.addRow( UserMap.USERNAME.toString(), userDetails.get( UserMap.USERNAME ) );
-		userGrid.addRow( UserMap.FIRSTNAME.toString(), userDetails.get( UserMap.FIRSTNAME ) );
-		userGrid.addRow( UserMap.LASTNAME.toString(), userDetails.get( UserMap.LASTNAME ) );
-		userGrid.addRow( UserMap.FULLNAME.toString(), userDetails.get( UserMap.FULLNAME ) );
-		userGrid.addRow( UserMap.BIO.toString(), userDetails.get( UserMap.BIO ) );
-		userGrid.setWidth( "50%" );
-		Label label = new Label( hello );
-		add( label );
+		String hello = "Hello " + userDetails.get( UserMap.FULLNAME );
+		GridLayout userGrid = new GridLayout( 2, 7 );
+		userGrid.addComponent( new Label( hello + " here is your Instagram user information." ),
+				0, 0, 1, 0 );
+		userGrid.addComponent( new Label( UserMap.ID.toString() ), 0, 1 );
+		userGrid.addComponent( new Label( userDetails.get( UserMap.ID ) ), 1, 1 );
+		userGrid.addComponent( new Label( UserMap.USERNAME.toString() ), 0, 2 );
+		userGrid.addComponent( new Label( userDetails.get( UserMap.USERNAME ) ), 1, 2 );
+		userGrid.addComponent( new Label( UserMap.FIRSTNAME.toString() ), 0, 3 );
+		userGrid.addComponent( new Label( userDetails.get( UserMap.FIRSTNAME ) ), 1, 3 );
+		userGrid.addComponent( new Label( UserMap.LASTNAME.toString() ), 0, 4 ); 
+		userGrid.addComponent( new Label( userDetails.get( UserMap.LASTNAME ) ), 1, 4 );
+		userGrid.addComponent( new Label( UserMap.FULLNAME.toString() ), 0, 5 );
+		userGrid.addComponent( new Label( userDetails.get( UserMap.FULLNAME ) ), 1, 5 );
+		userGrid.addComponent( new Label( UserMap.BIO.toString() ), 0, 6 );
+		userGrid.addComponent( new Label( userDetails.get( UserMap.BIO ) ), 1, 6 );
 		add( userGrid );
 	}
 	

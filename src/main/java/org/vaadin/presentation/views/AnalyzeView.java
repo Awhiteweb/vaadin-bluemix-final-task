@@ -1,6 +1,10 @@
 package org.vaadin.presentation.views;
 
+import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-
-
-
-
+import org.apache.commons.io.FileUtils;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.vaadin.backend.ImageData;
@@ -44,6 +45,15 @@ import com.vaadin.ui.PopupView.Content;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+
+import wordcloud.CollisionMode;
+import wordcloud.WordCloud;
+import wordcloud.WordFrequency;
+import wordcloud.bg.RectangleBackground;
+import wordcloud.font.scale.FontScalar;
+import wordcloud.font.scale.LinearFontScalar;
+import wordcloud.nlp.FrequencyAnalyzer;
+import wordcloud.palette.ColorPalette;
 
 /**
  * An example view that just make some simple analysis for the data and displays
@@ -93,13 +103,14 @@ public class AnalyzeView extends MVerticalLayout implements View
 							userSession.getImage( image.getId() ).getStandardResolution() ) );
 					v.addComponent( im );
 					w.setClosable( true );
+					w.setResizable( false );
+					w.setModal( true );
 					w.center();
 					UI.getCurrent().addWindow( w );
 				} );
 				int[] size = images.get( iN ).getThumbnailSize();
 				userGrid.getComponent( j, i ).setWidth( size[0], Unit.PIXELS );
 				userGrid.getComponent( j, i ).setHeight( size[1], Unit.PIXELS );
-				userGrid.getComponent( j, i ).setStyleName( "cell" );
 				iN++;
 			}
 		}
@@ -113,16 +124,54 @@ public class AnalyzeView extends MVerticalLayout implements View
 		VisualInsights visual = new VisualInsights();
 		visual.setApiKey( BluemixUtils.getAPIKey( "v-insights-fm", BluemixUtils.PLAN_FREE ) );
 		add( new Label( visual.getName() ) );
-//		for ( ImageData image : images )
-//		{
-//			File file = new File( image.getStandardResolution() );
-//			imageSummaries.add( visual.getSummary( file ) );
-//		}
+		for ( ImageData image : images )
+		{
+			try
+			{
+				File file = File.createTempFile( "tmpImage", "jpg" );
+				URL url = new URL( image.getStandardResolution() );
+				FileUtils.copyURLToFile( url, file );
+				imageSummaries.add( visual.getSummary( file ) );
+			}
+			catch ( MalformedURLException e )
+			{
+				e.printStackTrace();
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+			}
+		}
 //		for ( Summary sum : imageSummaries )
 //			for ( SummaryItem si : sum.getSummary() )
 //				add( new Label( String.format( "Summary: %s, Score: %d", si.getName(), si.getScore() ) ) );
-
+		
 		// word cloud https://github.com/jasondavies/d3-cloud
 	}
+	
+//	private void analyser( List<String> summary )
+//	{
+//		final FrequencyAnalyzer fq = new FrequencyAnalyzer();
+//		final List<WordFrequency> wf = fq.load( summary );
+//		final WordCloud wc = new WordCloud( 600, 300, CollisionMode.RECTANGLE );
+//		wc.setPadding( 0 );
+//		wc.setBackground( new RectangleBackground( 600, 300 ) );
+//		wc.setColorPalette( buildPalette() );
+//		wc.setFontScalar( new LinearFontScalar( 10, 40 ) );
+//		wc.build( wf );
+//		wc.writeToFile( "resources/cloud.png" );
+//	}
+//	
+//	private ColorPalette buildPalette()
+//	{
+//		return new ColorPalette( 
+//				new Color( 0x4055F1 ), 
+//				new Color( 0x408DF1 ), 
+//				new Color( 0x40AAF1 ), 
+//				new Color( 0x40C5F1 ), 
+//				new Color( 0x40D3F1 ), 
+//				new Color( 0xFFFFFF ) 
+//				);
+//	}
 
 }

@@ -32,7 +32,17 @@
 @mixin mytheme {
   @include valo;
 
-  .cell {
-      padding: 3px;
-  }
+	div.v-window-coolModal .v-window-contents {
+     
+		/* Sane browsers */
+		background: rgba(255,255,255,0.6);
+
+		/* IE... */
+		filter:progid: DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+	}
+	
+	.v-gridlayout-gridexpandratio .v-image{
+		padding: 3px;
+	}
+	
 }
