@@ -1,6 +1,6 @@
 package org.vaadin.backend;
 
-class Feedback
+public class Feedback
 {
 	private String[] name;
 	private Double value;

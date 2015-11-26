@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.vaadin.backend.Feedback;
 import org.vaadin.backend.ImageData;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
@@ -34,10 +35,12 @@ import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary;
 import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary.SummaryItem;
 import com.squareup.okhttp.Credentials;
 import com.vaadin.cdi.CDIView;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -121,45 +124,51 @@ public class AnalyzeView extends MVerticalLayout implements View
 
 	private void visualInsights()
 	{
-		List<Summary> imageSummaries = new ArrayList<Summary>();
-		VisualInsights visual = new VisualInsights();
-		String apiKey = BluemixUtils.getAPIKey( "v-insights-fm", BluemixUtils.PLAN_EXPERIMENTAL );
-//		String api2 = Credentials.basic("alex_p_white@yahoo.co.uk", "423Ch1lcroft");
-//		visual.setApiKey( api2 );
-		visual.setUsernameAndPassword( "60fe7223-a5a5-4536-86a1-9fa6af97ab02", "kZkIzAzruzdB" );
-		add( new Label( apiKey ) );
-//		add( new Label( api2 ) );
-		for ( ImageData image : images )
-		{
-			try
-			{
-				File file = File.createTempFile( "tmpImage", "jpg" );
-				URL url = new URL( image.getStandardResolution() );
-				FileUtils.copyURLToFile( url, file );
-				Summary summary = visual.getSummary( file );
-				imageSummaries.add( summary );
-			}
-			catch ( MalformedURLException e )
-			{
-				e.printStackTrace();
-			}
-			catch ( IOException e )
-			{
-				e.printStackTrace();
-			}
-		}
-		List<String> list = new ArrayList<String>();
-		for ( Summary sum : imageSummaries )
-			for ( SummaryItem si : sum.getSummary() )
-				list.add( si.getName() );
-		analyser( list );
+//		List<Summary> imageSummaries = new ArrayList<Summary>();
+//		VisualInsights visual = new VisualInsights();
+//		String apiKey = BluemixUtils.getAPIKey( "v-insights-fm", BluemixUtils.PLAN_EXPERIMENTAL );
+////		String api2 = Credentials.basic("alex_p_white@yahoo.co.uk", "423Ch1lcroft");
+////		visual.setApiKey( api2 );
+//		visual.setUsernameAndPassword( "60fe7223-a5a5-4536-86a1-9fa6af97ab02", "kZkIzAzruzdB" );
+//		add( new Label( apiKey ) );
+////		add( new Label( api2 ) );
+//		for ( ImageData image : images )
+//		{
+//			try
+//			{
+//				File file = File.createTempFile( "tmpImage", "jpg" );
+//				URL url = new URL( image.getStandardResolution() );
+//				FileUtils.copyURLToFile( url, file );
+//				Summary summary = visual.getSummary( file );
+//				imageSummaries.add( summary );
+//			}
+//			catch ( MalformedURLException e )
+//			{
+//				e.printStackTrace();
+//			}
+//			catch ( IOException e )
+//			{
+//				e.printStackTrace();
+//			}
+//		}
+//		List<String> list = new ArrayList<String>();
+//		for ( Summary sum : imageSummaries )
+//			for ( SummaryItem si : sum.getSummary() )
+//				list.add( si.getName() );
+		BeanItemContainer<Feedback> bic = new BeanItemContainer<Feedback>( Feedback.class );
+		for ( ImageData image : userSession.getImages() )
+			bic.addAll( image.getTopFiveFeedback() );
+		Grid grid = new Grid( bic );
+		grid.setColumnOrder( "parent", "child", "value" );
+		add( grid );
+//		analyser( list );
 	}
 	
-	private void analyser( List<String> list )
-	{
-		for ( String s : list )
-			add( new Label( s ) );
-	}
+//	private void analyser( List<String> list )
+//	{
+//		for ( String s : list )
+//			add( new Label( s ) );
+//	}
 	
 //	private void analyser( List<String> summary )
 //	{
