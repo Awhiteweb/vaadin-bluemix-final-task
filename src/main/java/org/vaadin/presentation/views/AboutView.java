@@ -27,7 +27,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * a button to reset the demo date in the database.
  */
 @CDIView( "" )
-@ViewMenuItem( icon = FontAwesome.INFO )
+@ViewMenuItem( icon = FontAwesome.INFO, order = 1 )
 public class AboutView extends MVerticalLayout implements View
 {
 	private static final long serialVersionUID = 1L;

@@ -60,7 +60,7 @@ import wordcloud.palette.ColorPalette;
  * it in various charts.
  */
 @CDIView( "analyze" )
-@ViewMenuItem( icon = FontAwesome.BAR_CHART_O, order = 1 )
+@ViewMenuItem( icon = FontAwesome.BAR_CHART_O, order = 2 )
 public class AnalyzeView extends MVerticalLayout implements View
 {
 	private static final long serialVersionUID = 1L;
@@ -131,7 +131,8 @@ public class AnalyzeView extends MVerticalLayout implements View
 				File file = File.createTempFile( "tmpImage", "jpg" );
 				URL url = new URL( image.getStandardResolution() );
 				FileUtils.copyURLToFile( url, file );
-				imageSummaries.add( visual.getSummary( file ) );
+				Summary summary = visual.getSummary( file );
+//				imageSummaries.add( summary );
 			}
 			catch ( MalformedURLException e )
 			{

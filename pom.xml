@@ -31,6 +31,12 @@
 		    <groupId>com.kennycason</groupId>
 		    <artifactId>kumo</artifactId>
 		    <version>1.2</version>
+		    <exclusions>
+		    	<exclusion>
+		    		  <groupId>org.jsoup</groupId>
+					  <artifactId>jsoup</artifactId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
     
         <!-- Vaadin core with precompiled theme -->
@@ -96,7 +102,7 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warName>${artifactId}</warName>
+                    <warName>${project.artifactId}</warName>
                 </configuration>
             </plugin>
             <plugin>

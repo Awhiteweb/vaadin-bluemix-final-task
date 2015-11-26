@@ -21,7 +21,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Notification;
 
 @CDIView("map")
-@ViewMenuItem(icon = FontAwesome.GLOBE, order = 1)
+@ViewMenuItem(icon = FontAwesome.GLOBE, order = 3 )
 public class MapView extends MVerticalLayout implements View 
 {
 	private static final long serialVersionUID = 1L;
