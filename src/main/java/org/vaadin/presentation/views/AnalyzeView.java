@@ -32,6 +32,7 @@ import com.ibm.watson.developer_cloud.util.BluemixUtils;
 import com.ibm.watson.developer_cloud.visual_insights.v1.VisualInsights;
 import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary;
 import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary.SummaryItem;
+import com.squareup.okhttp.Credentials;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -122,8 +123,12 @@ public class AnalyzeView extends MVerticalLayout implements View
 	{
 		List<Summary> imageSummaries = new ArrayList<Summary>();
 		VisualInsights visual = new VisualInsights();
-		visual.setApiKey( BluemixUtils.getAPIKey( "v-insights-fm", BluemixUtils.PLAN_FREE ) );
-		add( new Label( visual.getName() ) );
+		String apiKey = BluemixUtils.getAPIKey( "v-insights-fm", BluemixUtils.PLAN_EXPERIMENTAL );
+//		String api2 = Credentials.basic("alex_p_white@yahoo.co.uk", "423Ch1lcroft");
+//		visual.setApiKey( api2 );
+		visual.setUsernameAndPassword( "60fe7223-a5a5-4536-86a1-9fa6af97ab02", "kZkIzAzruzdB" );
+		add( new Label( apiKey ) );
+//		add( new Label( api2 ) );
 		for ( ImageData image : images )
 		{
 			try
@@ -132,7 +137,7 @@ public class AnalyzeView extends MVerticalLayout implements View
 				URL url = new URL( image.getStandardResolution() );
 				FileUtils.copyURLToFile( url, file );
 				Summary summary = visual.getSummary( file );
-//				imageSummaries.add( summary );
+				imageSummaries.add( summary );
 			}
 			catch ( MalformedURLException e )
 			{
@@ -143,11 +148,17 @@ public class AnalyzeView extends MVerticalLayout implements View
 				e.printStackTrace();
 			}
 		}
-//		for ( Summary sum : imageSummaries )
-//			for ( SummaryItem si : sum.getSummary() )
-//				add( new Label( String.format( "Summary: %s, Score: %d", si.getName(), si.getScore() ) ) );
-		
-		// word cloud https://github.com/jasondavies/d3-cloud
+		List<String> list = new ArrayList<String>();
+		for ( Summary sum : imageSummaries )
+			for ( SummaryItem si : sum.getSummary() )
+				list.add( si.getName() );
+		analyser( list );
+	}
+	
+	private void analyser( List<String> list )
+	{
+		for ( String s : list )
+			add( new Label( s ) );
 	}
 	
 //	private void analyser( List<String> summary )
@@ -160,7 +171,16 @@ public class AnalyzeView extends MVerticalLayout implements View
 //		wc.setColorPalette( buildPalette() );
 //		wc.setFontScalar( new LinearFontScalar( 10, 40 ) );
 //		wc.build( wf );
-//		wc.writeToFile( "resources/cloud.png" );
+//		try
+//		{
+//			File file = File.createTempFile( "cloud", "png" );
+//			wc.writeToFile( file.getAbsolutePath() );
+//		}
+//		catch ( IOException e )
+//		{
+//			System.out.println( "error creating temporary cloud.png file" );
+//			e.printStackTrace();
+//		}
 //	}
 //	
 //	private ColorPalette buildPalette()

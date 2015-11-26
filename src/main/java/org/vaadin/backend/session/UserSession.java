@@ -1,19 +1,29 @@
 package org.vaadin.backend.session;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 
+import org.apache.commons.io.FileUtils;
 import org.jinstagram.Instagram;
+import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.users.basicinfo.UserInfo;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 import org.vaadin.backend.ImageData;
+import org.vaadin.backend.Insight;
 import org.vaadin.backend.User;
 import org.vaadin.backend.UserMap;
+
+import com.ibm.watson.developer_cloud.visual_insights.v1.VisualInsights;
+import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary;
+import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary.SummaryItem;
 
 @SessionScoped
 public class UserSession implements Serializable
@@ -22,6 +32,7 @@ public class UserSession implements Serializable
 	private User user;
 	private Instagram object;
 	private MediaFeed mediaFeed;
+	private VisualInsights visualInsights;
 
 	public boolean isLoggedIn()
 	{
@@ -36,6 +47,7 @@ public class UserSession implements Serializable
 	public void setObject( Instagram object )
 	{
 		UserInfo userInfo;
+		initVisualInsights();
 		try
 		{
 			userInfo = object.getCurrentUserInfo();
@@ -50,6 +62,12 @@ public class UserSession implements Serializable
 		
 		this.object = object;
 //		user = new User( object );
+	}
+
+	private void initVisualInsights()
+	{
+		visualInsights = new VisualInsights();
+		visualInsights.setUsernameAndPassword( "60fe7223-a5a5-4536-86a1-9fa6af97ab02", "kZkIzAzruzdB" );
 	}
 	
 	public Instagram getObject()
@@ -117,6 +135,7 @@ public class UserSession implements Serializable
 			im.setThumbnail( mfd.getImages().getThumbnail().getImageUrl(),
 					mfd.getImages().getThumbnail().getImageWidth(),
 					mfd.getImages().getThumbnail().getImageHeight() );
+			im.setInsights( generateInsight( im ) );
 			user.addImage( im );
 		}
 	}
@@ -126,6 +145,23 @@ public class UserSession implements Serializable
 		if ( mfd.getLocation() != null )
 			return true;
 		return false;
+	}
+	
+	private Insight generateInsight( ImageData im )
+	{
+		try
+		{
+			File file = File.createTempFile( "tmpImage", "jpg" );
+			URL url = new URL( im.getStandardResolution() );
+			FileUtils.copyURLToFile( url, file );
+			Summary summary = visualInsights.getSummary( file );
+			return new Insight( summary.getSummary() );
+		}
+		catch ( IOException e )
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package org.vaadin.backend;
 
+import java.util.List;
+
 public class ImageData
 {
 	private Image thumbnail;
@@ -11,6 +13,7 @@ public class ImageData
 	private String locationName;
 	private String captionId;
 	private String captionText;
+	private Insight insight;
 	
 	public String getThumbnailUrl()
 	{
@@ -23,10 +26,6 @@ public class ImageData
 	{
 		return thumbnail.getSize();
 	}
-	public void setThumbnail( String url, int width, int height )
-	{
-		this.thumbnail = new Image( url, width, height );
-	}
 	public String getLowResolutionUrl()
 	{
 		return lowResolution.getUrl();
@@ -37,10 +36,6 @@ public class ImageData
 	public int[] getLowResolutionSize()
 	{
 		return lowResolution.getSize();
-	}
-	public void setLowResolution( String url, int width, int height )
-	{
-		this.lowResolution = new Image( url, width, height );
 	}
 	public String getStandardResolution()
 	{
@@ -53,10 +48,6 @@ public class ImageData
 	{
 		return standardResolution.getSize();
 	}
-	public void setStandardResolution( String url, int width, int height )
-	{
-		this.standardResolution = new Image( url, width, height );
-	}
 	
 	/**
 	 * @return double [lat, long]
@@ -65,6 +56,47 @@ public class ImageData
 	{
 		return location;
 	}
+	public String getId()
+	{
+		return id;
+	}
+	public String getLocationId()
+	{
+		return locationId;
+	}
+	public String getLocationName()
+	{
+		return locationName;
+	}
+	public String getCaptionId()
+	{
+		return captionId;
+	}
+	public String getCaptionText()
+	{
+		return captionText;
+	}
+	public List<Feedback> getTopFiveFeedback()
+	{
+		return insight.getFeedback( 5 );
+	}
+	public List<Feedback> getTopTenFeedback()
+	{
+		return insight.getFeedback( 10 );
+	}
+	
+	public void setThumbnail( String url, int width, int height )
+	{
+		this.thumbnail = new Image( url, width, height );
+	}
+	public void setLowResolution( String url, int width, int height )
+	{
+		this.lowResolution = new Image( url, width, height );
+	}
+	public void setStandardResolution( String url, int width, int height )
+	{
+		this.standardResolution = new Image( url, width, height );
+	}
 	/**
 	 * @param location double [lat, long]
 	 */
@@ -72,47 +104,31 @@ public class ImageData
 	{
 		this.location = location;
 	}
-	public String getId()
-	{
-		return id;
-	}
 	public void setId( String id )
 	{
 		this.id = id;
-	}
-	public String getLocationId()
-	{
-		return locationId;
 	}
 	public void setLocationId( String locationId )
 	{
 		this.locationId = locationId;
 	}
-	public String getLocationName()
-	{
-		return locationName;
-	}
 	public void setLocationName( String locationName )
 	{
 		this.locationName = locationName;
-	}
-	public String getCaptionId()
-	{
-		return captionId;
 	}
 	public void setCaptionId( String captionId )
 	{
 		this.captionId = captionId;
 	}
-	public String getCaptionText()
-	{
-		return captionText;
-	}
 	public void setCaptionText( String captionText )
 	{
 		this.captionText = captionText;
 	}
-	
+	public void setInsights( Insight insight )
+	{
+		this.insight = insight;
+	}
+
 	class Image
 	{
 		private String url;
