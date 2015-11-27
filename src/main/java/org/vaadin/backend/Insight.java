@@ -28,11 +28,21 @@ public class Insight
 	 */
 	public List<Feedback> getFeedback( int max )
 	{
-		return feedback.subList( 0, max ); 
+		return trimList( feedback.subList( 0, max ) ); 
 	}
 	
 	public int getFeedbackSize()
 	{
 		return feedback.size();
+	}
+	
+	private List<Feedback> trimList( List<Feedback> list )
+	{
+		for(Feedback f : list )
+		{
+			if ( f.getValue() == 0 )
+				list.remove( f );
+		}
+		return list;
 	}
 }

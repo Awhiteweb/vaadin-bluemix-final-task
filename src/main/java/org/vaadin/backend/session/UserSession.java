@@ -11,11 +11,11 @@ import javax.enterprise.context.SessionScoped;
 
 import org.apache.commons.io.FileUtils;
 import org.jinstagram.Instagram;
-import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.users.basicinfo.UserInfo;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
+import org.vaadin.backend.Constants;
 import org.vaadin.backend.ImageData;
 import org.vaadin.backend.Insight;
 import org.vaadin.backend.User;
@@ -23,7 +23,6 @@ import org.vaadin.backend.UserMap;
 
 import com.ibm.watson.developer_cloud.visual_insights.v1.VisualInsights;
 import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary;
-import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary.SummaryItem;
 
 @SessionScoped
 public class UserSession implements Serializable
@@ -67,7 +66,7 @@ public class UserSession implements Serializable
 	private void initVisualInsights()
 	{
 		visualInsights = new VisualInsights();
-		visualInsights.setUsernameAndPassword( "60fe7223-a5a5-4536-86a1-9fa6af97ab02", "kZkIzAzruzdB" );
+		visualInsights.setUsernameAndPassword( Constants.V_USERNAME, Constants.V_PASSWORD );
 	}
 	
 	public Instagram getObject()
@@ -140,12 +139,12 @@ public class UserSession implements Serializable
 		}
 	}
 
-	private boolean getLocation( MediaFeedData mfd )
-	{
-		if ( mfd.getLocation() != null )
-			return true;
-		return false;
-	}
+//	private boolean getLocation( MediaFeedData mfd )
+//	{
+//		if ( mfd.getLocation() != null )
+//			return true;
+//		return false;
+//	}
 	
 	private Insight generateInsight( ImageData im )
 	{

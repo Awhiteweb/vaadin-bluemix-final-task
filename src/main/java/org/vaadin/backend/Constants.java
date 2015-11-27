@@ -22,6 +22,8 @@ public class Constants {
     public static final String CLIENT_ID = LIVE_CID;
     public static final String CLIENT_SECRET = LIVE_CS;
     public static final String REDIRECT_URL = LIVE_RD_URL;
+    public static final String V_USERNAME = "60fe7223-a5a5-4536-86a1-9fa6af97ab02";
+    public static final String V_PASSWORD = "kZkIzAzruzdB";
 
     /**
      * Http Session Attributes

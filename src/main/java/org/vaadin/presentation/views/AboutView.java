@@ -77,6 +77,7 @@ public class AboutView extends MVerticalLayout implements View
 		userGrid.addComponent( new Label( UserMap.BIO.toString() ), 0, 6 );
 		userGrid.addComponent( new Label( userDetails.get( UserMap.BIO ) ), 1, 6 );
 		add( userGrid );
+		
 	}
 	
 	@Override

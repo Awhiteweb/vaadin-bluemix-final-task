@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuUI;
+import org.vaadin.presentation.views.TabView;
 
 
 /**
@@ -47,7 +48,7 @@ public class AppUI extends ViewMenuUI
         {
             getContent().setVisible( false );
             addWindow( loginWindow.get() );
-        }
+        } 
     }
 	
 	/**

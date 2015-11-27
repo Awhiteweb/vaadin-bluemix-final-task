@@ -28,8 +28,8 @@ public class MapView extends MVerticalLayout implements View
 	LMap worldMap = new LMap();
 
     @PostConstruct
-    void init() {
-
+    void init() 
+    {
         add(new Header("Customers on map").setHeaderLevel(2));
         expand(worldMap);
         setMargin(new MarginInfo(false, true, true, true));
@@ -37,6 +37,7 @@ public class MapView extends MVerticalLayout implements View
         LZoom zoom = new LZoom();
         zoom.setPosition(ControlPosition.topright);
         worldMap.addControl(zoom);
+        
     }
 
     @Override
