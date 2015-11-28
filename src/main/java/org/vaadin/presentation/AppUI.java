@@ -4,7 +4,10 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.cdi.CDIUI;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 
 import javax.enterprise.inject.Instance;
@@ -12,7 +15,6 @@ import javax.inject.Inject;
 
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuUI;
-import org.vaadin.presentation.views.TabView;
 
 
 /**
@@ -49,7 +51,7 @@ public class AppUI extends ViewMenuUI
             getContent().setVisible( false );
             addWindow( loginWindow.get() );
         } 
-    }
+     }
 	
 	/**
      * @return the currently active UI instance with correct type.

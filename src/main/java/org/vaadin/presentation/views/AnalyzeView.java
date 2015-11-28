@@ -1,12 +1,19 @@
 package org.vaadin.presentation.views;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.vaadin.backend.Feedback;
 import org.vaadin.backend.ImageData;
+import org.vaadin.backend.data.ListMap;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.presentation.components.DataGrid;
@@ -14,6 +21,7 @@ import org.vaadin.viritin.label.Header;
 import org.vaadin.viritin.layouts.MMarginInfo;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
@@ -29,6 +37,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+
+import javafx.collections.transformation.SortedList;
 
 /**
  * An example view that just make some simple analysis for the data and displays
@@ -94,4 +104,5 @@ public class AnalyzeView extends MVerticalLayout implements View
 		add( new Label( "<hr />",ContentMode.HTML ) );
 		add( new DataGrid() );
 	}
+	
 }

@@ -2,12 +2,14 @@ package org.vaadin.backend;
 
 import java.util.List;
 
+import org.vaadin.addon.leaflet.shared.Point;
+
 public class ImageData
 {
 	private Image thumbnail;
 	private Image lowResolution;
 	private Image standardResolution;
-	private double[] location;
+	private Point location;
 	private String id;
 	private String locationId;
 	private String locationName;
@@ -52,7 +54,7 @@ public class ImageData
 	/**
 	 * @return double [lat, long]
 	 */
-	public double[] getLocation()
+	public Point getLocation()
 	{
 		return location;
 	}
@@ -102,7 +104,7 @@ public class ImageData
 	 */
 	public void setLocation( double[] location )
 	{
-		this.location = location;
+		this.location = new Point( location[0], location[1] );
 	}
 	public void setId( String id )
 	{

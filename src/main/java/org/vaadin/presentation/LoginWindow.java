@@ -14,6 +14,7 @@ import org.jinstagram.http.Response;
 import org.jinstagram.http.Verbs;
 import org.vaadin.backend.Constants;
 import org.vaadin.backend.session.UserSession;
+import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.server.ExternalResource;
@@ -22,9 +23,13 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinResponse;
 import com.vaadin.server.VaadinServletResponse;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -39,7 +44,7 @@ public class LoginWindow extends Window implements RequestHandler
 
 	public LoginWindow()
 	{
-		super( "Login" );
+		super();
 	}
 	
 	public void authDenied( String reason ) {
@@ -56,15 +61,26 @@ public class LoginWindow extends Window implements RequestHandler
 		String url = service.getAuthorizationUrl( null );
 		instagramLoginLink = new Link( "Login with Instagram", new ExternalResource( url ) );
 		instagramLoginLink.addStyleName( ValoTheme.LINK_LARGE );
-		
 		VaadinSession.getCurrent().addRequestHandler(this);
-		
-		setContent( new MVerticalLayout( instagramLoginLink )
-				.alignAll( Alignment.MIDDLE_CENTER )
-				.withFullHeight() );
+		HorizontalLayout hl = new HorizontalLayout();
+		Label title = new Label( "<h2>Instagram Insights</h2>" );
+		title.setContentMode( ContentMode.HTML );
+		hl.addComponent( title );
+		hl.addComponent( instagramLoginLink );
+		hl.setComponentAlignment( title, Alignment.BOTTOM_LEFT );
+		hl.setComponentAlignment( instagramLoginLink, Alignment.MIDDLE_RIGHT );
+		hl.setWidth( "100%" );
+		Label label = new RichText().withMarkDownResource("/about.md");
+		VerticalLayout layout = new VerticalLayout( hl, label );
+		layout.setDefaultComponentAlignment( Alignment.TOP_CENTER );
+		layout.setSpacing( true );
+		layout.setMargin( true );
+		setContent( layout );
 		setModal( true );
-		setWidth( "300px" );
-		setHeight( "200px" );
+		setWidth( "75%" );
+		setHeight( "75%" );
+		setResizable( false );
+		setClosable( false );
 	}
 	
 	@Override

@@ -38,11 +38,12 @@ public class Insight
 	
 	private List<Feedback> trimList( List<Feedback> list )
 	{
-		for(Feedback f : list )
+		List<Feedback> trimmed = new ArrayList<Feedback>();
+		for( Feedback f : list )
 		{
-			if ( f.getValue() == 0 )
-				list.remove( f );
+			if ( f.getValue() > 0 )
+				trimmed.add( f );
 		}
-		return list;
+		return trimmed;
 	}
 }

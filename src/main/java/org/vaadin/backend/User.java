@@ -6,8 +6,6 @@ import java.util.List;
 import org.jinstagram.Instagram;
 import org.jinstagram.entity.users.basicinfo.UserInfo;
 import org.jinstagram.entity.users.basicinfo.UserInfoData;
-import org.jinstagram.entity.users.feed.MediaFeed;
-import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 
 public class User
@@ -18,8 +16,6 @@ public class User
 	private String firstname;
 	private String lastname;
 	private String fullname;
-//	private MediaFeed recentMediaFeed;
-//	private MediaFeed popularMediaFeed;
 	private Instagram object;
 	private UserInfoData userInfoData;
 	private List<ImageData> images = new ArrayList<ImageData>();
@@ -36,8 +32,6 @@ public class User
 		try
 		{
 			username = object.getCurrentUserInfo().getData().getFirstName();
-//			popularMediaFeed = object.getPopularMedia();
-//			recentMediaFeed = object.getRecentMediaFeed( username );
 		}
 		catch ( InstagramException e )
 		{
@@ -97,30 +91,15 @@ public class User
 		this.object = object;
 	}
 	
-//	public List<MediaFeedData> getRecentFeedData()
-//	{
-//		return recentMediaFeed.getData();
-//	}
-
 	public String getUsername()
 	{
 		return username;
 	}
 
-//	public MediaFeed getRecentMediaFeed()
-//	{
-//		return recentMediaFeed;
-//	}
-
 	public Instagram getObject()
 	{
 		return object;
 	}
-
-//	public MediaFeed getPopularMediaFeed()
-//	{
-//		return popularMediaFeed;
-//	}
 
 	public String getFirstname()
 	{
