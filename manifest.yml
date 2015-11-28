@@ -7,4 +7,3 @@ applications:
   services:
   - sqldb
   - v-insights-fm
-  - speech-to-text
