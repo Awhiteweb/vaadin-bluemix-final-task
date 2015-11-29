@@ -1,4 +1,4 @@
-package org.vaadin.backend;
+package org.vaadin.backend.data;
 
 public class Feedback
 {

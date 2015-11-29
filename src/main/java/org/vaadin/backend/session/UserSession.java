@@ -16,10 +16,10 @@ import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 import org.jinstagram.exceptions.InstagramException;
 import org.vaadin.backend.Constants;
-import org.vaadin.backend.ImageData;
-import org.vaadin.backend.Insight;
 import org.vaadin.backend.User;
 import org.vaadin.backend.UserMap;
+import org.vaadin.backend.data.ImageData;
+import org.vaadin.backend.data.Insight;
 
 import com.ibm.watson.developer_cloud.visual_insights.v1.VisualInsights;
 import com.ibm.watson.developer_cloud.visual_insights.v1.model.Summary;
@@ -29,7 +29,6 @@ public class UserSession implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private User user;
-	private Instagram object;
 	private MediaFeed mediaFeed;
 	private VisualInsights visualInsights;
 
@@ -58,9 +57,6 @@ public class UserSession implements Serializable
 		{
 			e.printStackTrace();
 		}
-		
-		this.object = object;
-//		user = new User( object );
 	}
 
 	private void initVisualInsights()
@@ -139,13 +135,6 @@ public class UserSession implements Serializable
 		}
 	}
 
-//	private boolean getLocation( MediaFeedData mfd )
-//	{
-//		if ( mfd.getLocation() != null )
-//			return true;
-//		return false;
-//	}
-	
 	private Insight generateInsight( ImageData im )
 	{
 		try
@@ -161,6 +150,13 @@ public class UserSession implements Serializable
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void exit()
+	{
+		user = null;
+		mediaFeed = null;
+		visualInsights = null;
 	}
 
 }

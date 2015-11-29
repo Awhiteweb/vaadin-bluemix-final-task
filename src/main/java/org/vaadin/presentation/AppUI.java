@@ -10,6 +10,9 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
@@ -34,6 +37,7 @@ import org.vaadin.cdiviewmenu.ViewMenuUI;
 public class AppUI extends ViewMenuUI 
 {
 	private static final long serialVersionUID = 1L;
+	private final static Logger log = Logger.getLogger( AppUI.class.getName() );
 
 	@Inject
 	UserSession userSession;
@@ -58,7 +62,7 @@ public class AppUI extends ViewMenuUI
      */
     public static AppUI get() 
     {
-        return (AppUI) UI.getCurrent();
+		return (AppUI) UI.getCurrent();
     }
 
 }

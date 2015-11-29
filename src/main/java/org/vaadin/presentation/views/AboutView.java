@@ -1,12 +1,14 @@
 package org.vaadin.presentation.views;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.vaadin.backend.UserMap;
+import org.vaadin.backend.data.ImageData;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.presentation.LoginWindow;
@@ -17,7 +19,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
@@ -34,6 +35,7 @@ public class AboutView extends MVerticalLayout implements View
 
 	@Inject
 	UserSession userSession;
+	private List<ImageData> images;
 	
 	@Inject
 	Instance<LoginWindow> loginWindow;
@@ -59,19 +61,11 @@ public class AboutView extends MVerticalLayout implements View
 	private void showDetails()
 	{
 		removeAllComponents();
-		int size = 0;
-		try
-		{
-//			size = userSession.getImages().size();	
-		}
-		catch ( Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
+		images = userSession.getImages();
+		int size = images.size();
 		HashMap<UserMap, String> userDetails = userSession.getUserDetails();
 		String hello = "Hello " + userDetails.get( UserMap.FULLNAME );
-		GridLayout userGrid = new GridLayout( 2, 7 );
+		GridLayout userGrid = new GridLayout( 2, 8 );
 		userGrid.addComponent( new Label( hello + " here is your Instagram user information." ),
 				0, 0, 1, 0 );
 		userGrid.addComponent( new Label( UserMap.ID.toString() ), 0, 1 );
@@ -87,9 +81,8 @@ public class AboutView extends MVerticalLayout implements View
 		userGrid.addComponent( new Label( UserMap.BIO.toString() ), 0, 6 );
 		userGrid.addComponent( new Label( userDetails.get( UserMap.BIO ) ), 1, 6 );
 		userGrid.addComponent( new Label( "Num of Images" ), 0, 7 );
-		userGrid.addComponent( new Label( String.format( "%1$", size ) ), 1, 7 ); 
+		userGrid.addComponent( new Label( String.format( "%d", size ) ), 1, 7 );
 		add( userGrid );
-		
 	}
 	
 	@Override

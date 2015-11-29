@@ -1,6 +1,8 @@
-package org.vaadin.backend;
+package org.vaadin.backend.data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.vaadin.addon.leaflet.shared.Point;
 
@@ -78,14 +80,58 @@ public class ImageData
 	{
 		return captionText;
 	}
-	public List<Feedback> getTopFiveFeedback()
+	/**
+	 * returns a list of the top 5 rated feedback items
+	 * if less than 5 exist then the total available
+	 * @return
+	 */	public List<Feedback> getTopFiveFeedback()
 	{
 		return insight.getFeedback( 5 );
 	}
-	public List<Feedback> getTopTenFeedback()
+	/**
+	 * returns a list of the top 10 rated feedback items
+	 * if less than 10 exist then the total available
+	 * @return
+	 */	public List<Feedback> getTopTenFeedback()
 	{
 		return insight.getFeedback( 10 );
 	}
+	/**
+	 * returns full list of feedback that has a value greater than 0
+	 * @return
+	 */
+	public List<Feedback> getAllFeedback()
+	{
+		return insight.getAllFeedback();
+	}
+	public Set<String> getParents()
+	{
+		return insight.getParents();
+	}
+	public int countParents()
+	{
+		return getParents().size();
+	}
+	/**
+	 * returns the average % value for a parent
+	 * String = parent
+	 * Number = double as a percentage
+	 * @return HashMap<String, Number>
+	 */
+	public HashMap<String, Number> getParentPercent()
+	{
+		return insight.getParentPercentage();
+	}
+	
+	public HashMap<String, Number> getChildren( String parent )
+	{
+		return insight.getChildren( parent );
+	}
+	
+	
+	
+	
+	// setters
 	
 	public void setThumbnail( String url, int width, int height )
 	{

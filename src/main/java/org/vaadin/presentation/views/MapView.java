@@ -1,5 +1,7 @@
 package org.vaadin.presentation.views;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -10,7 +12,7 @@ import org.vaadin.addon.leaflet.LeafletClickEvent;
 import org.vaadin.addon.leaflet.LeafletClickListener;
 import org.vaadin.addon.leaflet.control.LZoom;
 import org.vaadin.addon.leaflet.shared.ControlPosition;
-import org.vaadin.backend.ImageData;
+import org.vaadin.backend.data.ImageData;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.viritin.label.Header;
@@ -23,8 +25,11 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -36,35 +41,57 @@ public class MapView extends MVerticalLayout implements View
 	private static final long serialVersionUID = 1L;
 	@Inject
 	UserSession userSession;
+	List<ImageData> images;
 	LMap worldMap = new LMap();
 
     @PostConstruct
     void init() 
     {
-        add(new Header("Customers on map").setHeaderLevel(2));
-        expand(worldMap);
-        setMargin(new MarginInfo(false, true, true, true));
-
-        LZoom zoom = new LZoom();
-        zoom.setPosition(ControlPosition.topright);
-        worldMap.addControl(zoom);
-        
+    	try
+    	{
+    		images = userSession.getImages();
+    		loadData();
+    	}
+    	catch ( Exception e )
+    	{
+    		e.printStackTrace();
+    	}
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-        worldMap.removeAllComponents();
+    }
+
+	private void loadData()
+	{
+        add(new Header("Your photo locations").setHeaderLevel(2));
+        expand(worldMap);
+        setMargin(new MarginInfo(false, true, true, true));
+        LZoom zoom = new LZoom();
+        zoom.setPosition(ControlPosition.topright);
+        worldMap.addControl(zoom);
+		worldMap.removeAllComponents();
         LOpenStreetMapLayer osm = new LOpenStreetMapLayer();
         osm.setDetectRetina(true);
-        for ( ImageData data : userSession.getImages() )
+        int counter = 0;
+        for ( ImageData data : images )
         {
-        	LMarker marker = new LMarker( data.getLocation() );
-        	marker.addClickListener( new LCL( data ) );
-        	worldMap.addComponent( marker );
+        	if ( data.getLocation() != null)
+        	{
+	        	LMarker marker = new LMarker( data.getLocation() );
+	        	marker.addClickListener( new LCL( data ) );
+	        	worldMap.addComponent( marker );
+	        	counter++;
+        	}
         }
         worldMap.addComponent(osm);
-        worldMap.zoomToContent();
-    }
+        if ( counter > 0 )
+        	worldMap.zoomToContent();
+        else
+        	new Notification( "No data to map " + FontAwesome.WARNING, "You have no image location data to map", 
+        			Type.WARNING_MESSAGE, true ).show( Page.getCurrent() );
+        	
+	}
     
     class LCL implements LeafletClickListener
     {
@@ -118,6 +145,5 @@ public class MapView extends MVerticalLayout implements View
 			w.center();
 			UI.getCurrent().addWindow( w );
 		}
-    	
     }
 }

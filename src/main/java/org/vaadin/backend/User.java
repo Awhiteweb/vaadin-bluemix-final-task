@@ -7,6 +7,7 @@ import org.jinstagram.Instagram;
 import org.jinstagram.entity.users.basicinfo.UserInfo;
 import org.jinstagram.entity.users.basicinfo.UserInfoData;
 import org.jinstagram.exceptions.InstagramException;
+import org.vaadin.backend.data.ImageData;
 
 public class User
 {

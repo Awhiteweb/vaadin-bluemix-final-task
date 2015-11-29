@@ -9,4 +9,6 @@ README.md
 derby.log
 vaadindb/
 target/
+.bash_rc
+AppWidgetset/
 

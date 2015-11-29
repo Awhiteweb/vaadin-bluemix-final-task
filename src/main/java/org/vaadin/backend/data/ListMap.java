@@ -1,9 +1,7 @@
 package org.vaadin.backend.data;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-
-import org.vaadin.backend.Feedback;
 
 public class ListMap
 {
@@ -12,8 +10,9 @@ public class ListMap
 	private int quantity;
 	public ListMap( Feedback feedback )
 	{
+		this.feedback = new LinkedList<Feedback>();
 		this.parent = feedback.getParent();
-		this.feedback = Arrays.asList( feedback );
+		this.feedback.add( feedback );
 		this.quantity = 1;
 	}
 	public void addFeedback( Feedback feedback )
