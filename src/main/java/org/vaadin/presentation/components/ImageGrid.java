@@ -7,7 +7,6 @@ import org.vaadin.backend.data.ImageData;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.MouseEventDetails.MouseButton;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;

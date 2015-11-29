@@ -4,17 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
 import org.vaadin.backend.data.Feedback;
 import org.vaadin.backend.data.ImageData;
 import org.vaadin.backend.data.ListMap;
-import org.vaadin.backend.session.UserSession;
 
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
 
 public class DataGrid extends Grid
 {
@@ -67,19 +61,12 @@ public class DataGrid extends Grid
 
 	private void createContents( List<ListMap> list )
 	{
-//		int row = 0;
 		for (int i = 0; i < list.size(); i++ )
 		{
 			addRow( list.get( i ).getParent(), null, null, null );
-//			System.out.println( "row " + row + " columns " + getColumns() );
-//			addComponent( new Label( list.get( i ).getParent() ), 0, row );
 			for ( Feedback f : list.get( i ).getFeedback() )
 			{
 				addRow( null, f.getChild(), String.format( "%1$.2f%%", f.getValue()*100 ), f.toString() );
-//				addComponent( new Label( f.getChild() ), 1, row, 1, row );
-//				addComponent( new Label( String.format( "%1$.2f%%", f.getValue()*100 ) ), 2, row, 2, row );
-//				addComponent( new Label( f.toString() ), 3, row, 3, row );
-//				row++;
 			}
 		}
 	}

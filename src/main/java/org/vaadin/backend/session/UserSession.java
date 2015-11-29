@@ -48,7 +48,7 @@ public class UserSession implements Serializable
 		initVisualInsights();
 		try
 		{
-			userInfo = object.getCurrentUserInfo();
+			userInfo = object.getCurrentUserInfo();			
 			user = new User( object, userInfo );
 			mediaFeed = object.getRecentMediaFeed( user.getId() );
 			addMediaToUser();
@@ -58,7 +58,7 @@ public class UserSession implements Serializable
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void initVisualInsights()
 	{
 		visualInsights = new VisualInsights();

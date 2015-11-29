@@ -6,16 +6,12 @@ import javax.inject.Inject;
 
 import org.jinstagram.Instagram;
 import org.jinstagram.auth.InstagramAuthService;
-import org.jinstagram.auth.model.OAuthRequest;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.auth.model.Verifier;
 import org.jinstagram.auth.oauth.InstagramService;
-import org.jinstagram.http.Response;
-import org.jinstagram.http.Verbs;
 import org.vaadin.backend.Constants;
 import org.vaadin.backend.session.UserSession;
 import org.vaadin.viritin.label.RichText;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.RequestHandler;
@@ -102,20 +98,5 @@ public class LoginWindow extends Window implements RequestHandler
 		}
 		return false;
 	}
-	
-//	static {
-//	    //for localhost testing only
-//	    javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
-//	    new javax.net.ssl.HostnameVerifier(){
-//
-//	        public boolean verify(String hostname,
-//	                javax.net.ssl.SSLSession sslSession) {
-//	            if (hostname.equals("localhost")) {
-//	                return true;
-//	            }
-//	            return false;
-//	        }
-//	    });
-//	}
 
 }

@@ -1,13 +1,9 @@
 package org.vaadin.presentation.components;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.collections.list.TreeList;
-import org.vaadin.backend.data.Feedback;
 import org.vaadin.backend.data.ImageData;
 
 import com.vaadin.addon.charts.Chart;
@@ -35,6 +31,7 @@ public class RoseChart extends Chart
 	private Number[] minSeriesData;
 	private Number[] lightSeriesData;
 	private Number[] aveSeriesData;
+	private Number[] abvSeriesData;
 	private Number[] highSeriesData;
 	
 	public RoseChart( List<ImageData> images )
@@ -92,6 +89,7 @@ public class RoseChart extends Chart
         conf.addSeries( new ListSeries( Label.MIN.toString(), minSeriesData ) );
         conf.addSeries( new ListSeries( Label.LIGHT.toString(), lightSeriesData ) );
         conf.addSeries( new ListSeries( Label.AVE.toString(), aveSeriesData ) );
+        conf.addSeries( new ListSeries( Label.ABV.toString(), abvSeriesData ) );
         conf.addSeries( new ListSeries( Label.HIGH.toString(), highSeriesData ) );
 
         conf.reverseListSeries();
@@ -128,6 +126,7 @@ public class RoseChart extends Chart
 		minSeriesData = new Number[labels.size()];
 		lightSeriesData = new Number[labels.size()];
 		aveSeriesData = new Number[labels.size()];
+		abvSeriesData = new Number[labels.size()];
 		highSeriesData = new Number[labels.size()];
 		
 		int i = 0;
@@ -139,23 +138,18 @@ public class RoseChart extends Chart
 			{
 				case MIN:
 					minSeriesData[i] = percent;
-//					Number[] a = seriesData.get( Label.MIN );
-//					a[i] = percent;
 					break;
 				case LIGHT:
 					lightSeriesData[i] = percent;
-//					Number[] b = seriesData.get( Label.LIGHT );
-//					b[i] = percent;
 					break;
 				case AVE:
 					aveSeriesData[i] = percent;
-//					Number[] c = seriesData.get( Label.AVE );
-//					c[i] = percent;
+					break;
+				case ABV:
+					abvSeriesData[i] = percent;
 					break;
 				case HIGH:
 					highSeriesData[i] = percent;
-//					Number[] d = seriesData.get( Label.HIGH );
-//					d[i] = percent;
 					break;
 				default:
 					break;
@@ -165,26 +159,6 @@ public class RoseChart extends Chart
 
 	}
 	
-	private Number[] initNumberArray( int num )
-	{
-		List<Number> n = new ArrayList<Number>();
-		for ( int i = 0; i < num; i++ )
-			n.add( 0 );
-		return n.toArray( new Number[num] );
-	}
-	
-//	private List<Mapping> matchToEnum( HashMap<String, Number[]> results )
-//	{
-//		List<Mapping> map = new LinkedList<Mapping>();
-//		for ( String r : results.keySet() )
-//		{
-//			Number[] n = results.get( r );
-//			double percent = ( n[0].doubleValue() / n[1].doubleValue() ) * 100;
-//			map.add( new Mapping( r, Label.getLabel( percent ) ) );
-//		}
-//		return map;
-//	}
-
 	private HashMap<String, Number[]> mergeLists( List<HashMap<String, Number>> adults, List<HashMap<String, Number[]>> children )
 	{
 		HashMap<String, Number[]> map = new HashMap<String, Number[]>();
@@ -237,48 +211,12 @@ public class RoseChart extends Chart
 		return map;
 	}
 	
-	class Mapping
-	{
-		private int[] data;
-		private String name;
-		
-		Mapping( String name, Label value )
-		{
-			this.name = name;
-			switch ( value )
-			{
-				case MIN:
-					data = new int[]{ 1, 0, 0, 0 };
-					break;
-				case LIGHT:
-					data = new int[]{ 0, 1, 0, 0 };
-					break;
-				case AVE:
-					data = new int[]{ 0, 0, 1, 0 };
-					break;
-				case HIGH:
-					data = new int[]{ 0, 0, 0, 1 };
-					break;
-				default:
-					break;
-			}
-		}
-		
-		public String getName()
-		{
-			return name;
-		}
-		public int[] getValues()
-		{
-			return data;
-		}
-	}
-
 	enum Label
 	{
-		MIN ( "Minimal" , 25 ),
-		LIGHT ( "OK", 50 ),
-		AVE ( "Good", 75 ),
+		MIN ( "Minimal" , 20 ),
+		LIGHT ( "OK", 40 ),
+		AVE ( "Average", 60 ),
+		ABV ( "Above Average", 80 ),
 		HIGH ( "High", 100 );
 		
 		private String name;
@@ -298,6 +236,8 @@ public class RoseChart extends Chart
 				return LIGHT;
 			else if ( num < AVE.max )
 				return AVE;
+			else if ( num < ABV.max )
+				return ABV;
 			else
 				return HIGH;
 		}
